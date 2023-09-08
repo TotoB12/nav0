@@ -134,7 +134,7 @@ if (data.snappedPoints) {
             let speed = distance * 1800;
             console.log(`Speed: ${speed}`)
     
-            document.getElementById('speedometer').textContent = speed.toFixed(1) + ' mph';
+            document.getElementById('speedometer').textContent = speed.toFixed(0) + ' mph';
               
     
         }

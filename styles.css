@@ -6,99 +6,274 @@ html, body {
     font-family: 'Montserrat', sans-serif;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
     display: flex;
     flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
 }
 
-#map-wrapper {
-    position: relative;
-    width: 100%;
+.mapboxgl-ctrl-bottom-left .mapboxgl-ctrl-logo {
+  display: none;
 }
 
 #map {
+    width: 100vw;
+    height: 100vh;
+}
+
+#nav-bar {
+    position: fixed;
+    bottom: 0;
     width: 100%;
-    height: 100%;
-}
-
-a[href^="http://maps.google.com/maps"]{display:none !important}
-a[href^="https://maps.google.com/maps"]{display:none !important}
-
-.gmnoprint a, .gmnoprint span, .gm-style-cc {
-    display:none;
-}
-.gmnoprint div {
-    background:none !important;
-}
-
-#address-form {
     display: flex;
-    justify-content: center;
     align-items: center;
-    background-color: #f5f5f5;
-    padding: 10px;
+    justify-content: space-between;
+    gap: 10px;
+    transition: height 0.5s, border-radius 0.5s;
+    background-color: hsla(221, 45%, 8%, 0.8);
+    -webkit-backdrop-filter: blur(5px);
+    -moz-background-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    padding: 20px;
 }
 
-#address-input {
-    flex-grow: 1;
-    margin-right: 10px;
-    padding: 10px;
-    border: none;
-    border-radius: 30px;
-    outline: none;
+@media only screen and (max-width: 767px) {
+  #nav-bar {
+    flex-direction: column;
+  }
 }
 
-button {
-    width: 50px;
-    height: 50px;
-    border: none;
-    border-radius: 10%;
-    background-color: #f5f5f5;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+#preset-buttons {
+    width: 100%;
+    max-width: 500px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-around;
+    transition: opacity 0.5s;
 }
 
-button:hover {
-    background-color: #e0e0e0;
-}
+#preset-buttons span {
+  border-radius: 20px;
+  padding: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: #e6e6e6;
+  font-size: 14px;
+  transition: background-color .2s;
 
-button img {
-    width: 24px;
-    height: 24px;
-}
-
-@media screen and (max-width: 600px) {
-    #address-input {
-        width: 80%;
+  @media only screen and (min-width: 768px) {
+    &:hover {
+      background-color: hsl(222, 24%, 25%);
     }
+  }
+  @media only screen and (max-width: 767px) {
+    &:active {
+      background-color: hsl(222, 24%, 25%);
+    }
+  }
 }
 
-* {
-    box-sizing: border-box;
-}
-
-#directionsPanel {
-    max-height: 200px;
-    overflow: auto;
-}
-
-#recenter-button {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    width: 50px;
-    z-index: 1;
-}
-
-#speedometer {
-    position: absolute;
-    top: 10px;
-    left: 10px;
+#preset-buttons button {
+    background-color: hsl(222, 24%, 25%);
+    border-radius: 50%;
     padding: 10px;
-    background-color: white;
-    border-radius: 5px;
-    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    position: relative;
+}
+
+#preset-buttons img {
+    width: 5vw;
+    min-width: 20px;
+    max-width: 30px;
+}
+
+.modal {
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgba(17, 26, 45, 0.7); 
+  -webkit-backdrop-filter: blur(10px);
+  -moz-background-filter: blur(10px);
+  backdrop-filter: blur(7px);
+  display: grid;
+  place-items: center;
+}
+
+#myModal {
+  width: 100%;
+  height: 100%;
+}
+
+.modal-content {
+  background-color: hsl(222, 24%, 25%);
+  padding: 20px;
+  width: 100%; 
+  height: 100%;
+  font-family: 'Montserrat', sans-serif;
+  color: #e6e6e6;
+  animation-name: modalopen;
+  animation-duration: 1s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes modalopen {
+  from {opacity: 0}
+  to {opacity: 1}
+}
+
+#startButton {
+  background-color: #e6e6e6;
+  border: none;
+  color: hsl(222, 24%, 25%);
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: background-color .2s;
+}
+
+#startButton:hover {
+  background-color: #ccc;
+}
+
+
+
+
+.mapboxgl-ctrl-geocoder {
+  /* Style the search box container */
+  --paddingLeftRight: 12px;
+  --background: hsl(222, 21%, 18%);
+  --transitionDuration: .2s;
+  
+  border-radius: 12px;
+  border: none;
+  background-color: var(--background);
+  width: 100%;
+  padding: var(--paddingLeftRight) 16px;
+  padding-left: 45px;
+  display: flex;
+  align-items: center;
+
+  overflow: hidden;
+}
+
+
+.mapboxgl-ctrl-geocoder:has(input[type='text']:not(:placeholder-shown))::after {
+  transform: none;
+}
+
+.mapboxgl-ctrl-geocoder::before {
+  content: "Where to ?";
+  position: absolute;
+  z-index: -2;
+  left: calc(4 * var(--paddingLeftRight));
+  color: rgb(117, 117, 117);
+  font-size: 20px;
+  opacity: 1;
+}
+
+/* mask */
+.mapboxgl-ctrl-geocoder::after {
+  content: "Where to ?";
+  position: absolute;
+  z-index: -1;
+  left: calc(4 * var(--paddingLeftRight));
+  color: transparent;
+  background-color: var(--background);
+  font-size: 20px;
+  transform: translateX(-100%);
+  transition: transform var(--transitionDuration);
+  transition-timing-function: linear;
+}
+
+.mapboxgl-ctrl-geocoder input[type='text'] {
+  /* Change the color of the text inside the search bar */
+  padding: 0;
+  outline: none;
+  color: hsl(0, 0%, 64%);
+  font-size: 20px;
+}
+
+.mapboxgl-ctrl-geocoder input[type='text']::placeholder {
+    opacity: 0;
+}
+
+.mapboxgl-ctrl-geocoder svg {
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  transform: translate(var(--paddingLeftRight), -50%);
+}
+
+
+
+
+
+
+.mapboxgl-ctrl-geocoder .suggestions {
+    /* Style the suggestions dropdown */
+    /* background-color: rgb(43, 51, 64); */
+}
+
+.mapboxgl-ctrl-group {
+    background: rgb(13, 19, 33);
+}
+
+.mapboxgl-ctrl-icon {
+    /* Style all control icons */
+    /* color: #ff0000; */
+    background-color: rgb(13, 19, 33);
+    /* border-radius: 5px; */
+}
+
+.mapboxgl-ctrl button.mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon {
+    /* Style zoom in button */
+    /* font-size: 20px; */
+    background-image: url("/src/zoom-in.svg");
+}
+
+.mapboxgl-ctrl button.mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon {
+    /* Style zoom out button */
+    /* font-size: 20px; */
+    background-image: url("/src/zoom-out.svg");
+}
+
+.mapboxgl-ctrl button.mapboxgl-ctrl-geolocate .mapboxgl-ctrl-icon {
+    background-image: url("/src/geolocate.svg");
+}
+
+.mapboxgl-ctrl button.mapboxgl-ctrl-geolocate.mapboxgl-ctrl-geolocate-active .mapboxgl-ctrl-icon {
+    background-image: url("/src/geolocate-active.svg")
+}
+
+.mapboxgl-ctrl button.mapboxgl-ctrl-geolocate.mapboxgl-ctrl-geolocate-background .mapboxgl-ctrl-icon {
+    background-image: url("/src/geolocate-background.svg")
+}
+
+.mapboxgl-ctrl-compass {
+    /* border: 2px solid #000; */
 }
